@@ -26,7 +26,7 @@ jobs:
             npm install --no-audit --no-fund
           fi
 
-      # 🧱 Build with static export
+
       - name: Build Next.js Project
         run: npm run build
         env:
