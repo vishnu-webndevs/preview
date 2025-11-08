@@ -7,6 +7,17 @@ import { toast, Toaster } from 'react-hot-toast';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://preview.totan.in/api';
 
+export async function generateStaticParams() {
+  const res = await fetch('https://preview.totan.in/api/public/all-campaigns');
+  const data = await res.json();
+
+  return data.map((item: any) => ({
+    brand_username: item.brand_username,
+    campaign_name: item.campaign_name,
+  }));
+}
+
+
 interface VideoData {
   id: number;
   title: string;
