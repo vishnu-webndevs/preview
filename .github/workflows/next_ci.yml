@@ -8,6 +8,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
 
     steps:
       - name: Checkout Code
@@ -43,8 +46,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: 
-          server-dir: ./first_text/
+          local-dir: frontend/out
+          server-dir: ./
           dangerous-clean-slate: false
           exclude: |
             **/.git*
