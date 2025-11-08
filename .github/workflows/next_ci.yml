@@ -33,6 +33,14 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           NODE_ENV: production
 
+      - name: Verify static export output exists
+        run: |
+          ls -la
+          if [ ! -d "out" ]; then
+            echo "Expected static export at ./frontend/out/, but ./frontend/out/ is missing."
+            exit 1
+          fi
+
       # 📤 Deploy 'out' folder to FTP
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -42,7 +50,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: frontend/out/
+          local-dir: ./frontend/out/
           server-dir: ./
           dangerous-clean-slate: false
           exclude: |
