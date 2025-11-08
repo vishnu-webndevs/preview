@@ -3,25 +3,22 @@ name: Next.js CI/CD to FTP Server
 on:
   push:
     branches:
-      - main     # jab 'main' branch me push ho to deploy chale
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout code
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
 
-      # 3️⃣ Install dependencies
       - name: Install Dependencies
         run: |
           if [ -f package-lock.json ]; then
@@ -30,14 +27,14 @@ jobs:
             npm install --no-audit --no-fund
           fi
 
-      # 4️⃣ Build Next.js project
+      # 🧱 Build with static export
       - name: Build Next.js Project
-        run: npm run build && npm run export
+        run: npm run build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           NODE_ENV: production
 
-      # 5️⃣ Deploy 'out' folder to FTP (for static hosting)
+      # 📤 Deploy 'out' folder to FTP
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -46,8 +43,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftp
-          local-dir: out/         
-          server-dir: ./test_first/
+          local-dir: out/
+          server-dir: ./first_text/
           dangerous-clean-slate: false
           exclude: |
             **/.git*
